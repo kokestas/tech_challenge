@@ -58,7 +58,18 @@ class DatabaseSeeder extends Seeder
     {
         $name = $data['name'];
         $price = !empty($data['price']) ? $data['price'] : 0;
-        $description = !empty($data['description']) ? $data['description'] : '';
+        $description = !empty($data['description']) ? $data['description'] : 
+        'Is education residence conveying so so. 
+        Suppose shyness say ten behaved morning had. 
+        Any unsatiable assistance compliment occasional 
+        too reasonably advantages. Unpleasing has ask 
+        acceptance partiality alteration understood two. 
+        Worth no tiled my at house added. Married he 
+        hearing am it totally removal. Remove but suffer 
+        wanted his lively length. Moonlight two 
+        applauded conveying end direction old principle but. 
+        Are expenses distance weddings perceive 
+        strongly who age domestic.';
 
         $now = Carbon::now();
 
