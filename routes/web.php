@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'ItemsController@index');
+Route::get('/{$category}', 'ItemsController@category($category)');
