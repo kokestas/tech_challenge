@@ -3,13 +3,10 @@
 @section('content')
     <div class="category-products">
         <h3>
-            <span class="back-btn">
-                <a href="/" class="btn btn-secondary">Back</a>
-            </span>
-           {{$category->name}}
+            Search results:
         </h3>
-        {{ $category->links }}
-        @foreach ($category->products as $product)
+        {{ $result->links()}}
+        @foreach ($result as $product)
             <div class="card inline">
                  <div class="card-body row">
                     <div class="col-md-6">
@@ -26,6 +23,6 @@
         @endforeach
         
         <br/><br/>
-        {{ $category->links }}
+        {{ $result->links() }}
     </div>
 @endsection

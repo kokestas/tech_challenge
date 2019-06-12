@@ -25,3 +25,7 @@
 .back-btn {
     margin-right: 20px;
 }
+.product {
+    margin: 50px auto;
+    display: block !important;
+}

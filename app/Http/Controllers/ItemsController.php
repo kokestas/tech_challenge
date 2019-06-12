@@ -27,9 +27,24 @@ class ItemsController extends BaseController
         $data['categories'] = $categories;
         return view('categories')->with($data);
     }
+    
+    public function search() 
+    {
+        $data = [];
+        $search = Input::post('q')?Input::post('q'):'';
+        $data['search'] = $search;
+        $result = Product::where(function($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+              ->orWhere('description', 'like', '%' . $search . '%');
+        })->paginate(5);
+        $result->appends(['q' => $search]);
+        $data['result'] = $result;
+        return view('result')->with($data);
+    }
 
     public function category($name)
     {
+        $data = [];
         $category = Category::where('name', ucfirst($name))->get()->first();
    
         if (!empty($category)) {
@@ -45,8 +60,14 @@ class ItemsController extends BaseController
 
     public function product($id) 
     {
-        $data['product'] = Product::find($category->id)->category;
-        return view('category')->with($data);
+        if (!is_numeric($id)) {
+            return redirect('/');
+        }
+        $data = [];
+        $data['product'] = Product::find($id);
+        $data['product']->category = Product::find($id)->category;
+  
+        return view('product')->with($data);
     }
 
     protected function paginate($items)
