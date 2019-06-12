@@ -10,6 +10,5 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/category/{name}', ['uses' =>'ItemsController@category']);
 Route::get('/', 'ItemsController@index');
-Route::get('/{$category}', 'ItemsController@category($category)');

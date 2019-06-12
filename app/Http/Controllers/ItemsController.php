@@ -22,4 +22,13 @@ class ItemsController extends BaseController
         $data['categories'] = $categories;
         return view('categories')->with($data);
     }
+
+    public function category($name)
+    {
+
+        $category = Categories::where('name', ucfirst($name))->get();
+
+        $data['category'] = $category[0];
+        return view('category')->with($data);
+    }
 }
