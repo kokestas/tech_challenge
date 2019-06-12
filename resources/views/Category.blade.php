@@ -1,12 +1,30 @@
 @extends('layout')
 
 @section('content')
-    <div class="card categories-list" style="width: 100%;">
-        <div class="card-header">
+    <div class="category-products">
+        <h3>
+            <span class="back-btn">
+                <a href="/" class="btn btn-secondary">Back</a>
+            </span>
            {{$category->name}}
-        </div>
+        </h3>
+        {{ $category->links }}
         @foreach ($category->products as $product)
-            {{$product->name}}
+            <div class="card inline">
+                 <div class="card-body row">
+                    <div class="col-md-6">
+                        <img class="card-img-top" src="{{ URL::asset('img/mobile.jpg') }}" alt="Card image">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>{{$product['name']. ' [$'.$product['price'] . ']'}}</strong></p>
+                        <a href="/product/{{$product['id']}}" class="card-link">More info</a>
+                    </div>
+                    
+                </div>
+            </div>
         @endforeach
+        
+        <br/><br/>
+        {{ $category->links }}
     </div>
 @endsection

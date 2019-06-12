@@ -11,4 +11,5 @@
 |
 */
 Route::get('/category/{name}', ['uses' =>'ItemsController@category']);
+Route::get('/product/{id}', ['uses' =>'ItemsController@product']);
 Route::get('/', 'ItemsController@index');

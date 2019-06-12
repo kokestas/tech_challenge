@@ -15,7 +15,11 @@
         function display_children($list, $curr_item) {
             echo '<li class="list-group-item">';
             
-            echo '<a class="nav-link " href="/category/'.strtolower($curr_item->name).'">'.$curr_item->name.'</a>';
+            if ($curr_item->parent_id !== NULL) {
+                echo '<a class="nav-link " href="/category/'.strtolower($curr_item->name).'">'.$curr_item->name.'</a>';
+            } else {
+                echo $curr_item->name;
+            }
             $children_count = 0;
             foreach ($list as $item) {
                 if ($item->parent_id === $curr_item->id) {
