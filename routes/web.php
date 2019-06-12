@@ -11,6 +11,6 @@
 |
 */
 Route::any('/search', 'ItemsController@search');
-Route::get('/category/{name}', ['uses' =>'ItemsController@category']);
+Route::any('/category/{name}', ['uses' =>'ItemsController@category']);
 Route::get('/product/{id}', ['uses' =>'ItemsController@product']);
 Route::get('/', 'ItemsController@index');

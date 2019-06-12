@@ -17,6 +17,16 @@ class ItemsController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    function __construct()
+    {
+        $this->sort_array = [
+            'name_asc' => ['by' => 'name', 'val' => 'ASC'],
+            'name_desc' => ['by' => 'name', 'val' => 'DESC'],
+            'price_asc' => ['by' => 'price', 'val' => 'ASC'],
+            'price_desc' => ['by' => 'price', 'val' => 'DESC'],
+        ];
+    }
+
     public function index() 
     {
         $data = [];
@@ -32,12 +42,23 @@ class ItemsController extends BaseController
     {
         $data = [];
         $search = Input::post('q')?Input::post('q'):'';
+        if (empty($search)) {
+            return view('result');
+        }
         $data['search'] = $search;
+        $sort_by = Input::post('sort_by');
+        $data['sort_by'] = $sort_by;
+        if (!empty($this->sort_array[$sort_by]) && $sort_by !== 'sort_by') {
+            $sort_by_arr = $this->sort_array[$sort_by];
+        } else {
+            $sort_by_arr = ['by' => 'id', 'val'=>'asc'];
+        }
+
         $result = Product::where(function($q) use ($search) {
             $q->where('name', 'like', '%' . $search . '%')
               ->orWhere('description', 'like', '%' . $search . '%');
-        })->paginate(5);
-        $result->appends(['q' => $search]);
+        })->orderBy($sort_by_arr['by'],$sort_by_arr['val'])->paginate(5);
+        $result->appends(['q' => $search, 'sort_by' => $sort_by]);
         $data['result'] = $result;
         return view('result')->with($data);
     }
@@ -46,12 +67,20 @@ class ItemsController extends BaseController
     {
         $data = [];
         $category = Category::where('name', ucfirst($name))->get()->first();
-   
+        
+        $sort_by = Input::post('sort_by');
+        $data['sort_by'] = $sort_by;
+        if (!empty($this->sort_array[$sort_by]) && $sort_by !== 'sort_by') {
+            $sort_by_arr = $this->sort_array[$sort_by];
+        } else {
+            $sort_by_arr = ['by' => 'id', 'val'=>'asc'];
+        }
+
         if (!empty($category)) {
-            $category->products = Category::find($category->id)->products;
-            $pagination = $this->paginate($category->products);
-            $category->products = $pagination['products'];
-            $category->links = $pagination['links'];
+            $category->products = Product::where('category_id', $category->id)->orderBy($sort_by_arr['by'],$sort_by_arr['val'])->paginate(5);
+            $category->products->appends(['sort_by' => $sort_by]);
+        } else {
+            return redirect('/');
         }
         
         $data['category'] = $category;
